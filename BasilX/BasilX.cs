@@ -42,6 +42,8 @@ namespace org.herbal3d.BasilX {
         }
 
         public void Start(string[] args) {
+            // Create an application level 'context' to pass around.
+            // This is not for global variables but for utilities needed by all (logging, parameters, ...)
             _context = new BasilXContext() {
                 log = new LoggerConsole(),
                 version = Assembly.GetExecutingAssembly().GetName().Version.ToString(),

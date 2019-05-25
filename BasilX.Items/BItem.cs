@@ -38,6 +38,7 @@ namespace org.herbal3d.BasilX.Items {
         TRANSPORT
     };
 
+    // A BItem has named properties which are defined with getters and setters.
     public delegate T BGetValue<T>();
     public delegate void BSetValue<T>(T val);
     public abstract class PropertyDefnBase {
@@ -48,6 +49,10 @@ namespace org.herbal3d.BasilX.Items {
         public BGetValue<T> getter;
         public BSetValue<T> setter;
         public PropertyDefn() {
+            type = typeof(T);
+        }
+        public PropertyDefn(string pName) {
+            name = pName;
             type = typeof(T);
         }
     }
@@ -72,24 +77,19 @@ namespace org.herbal3d.BasilX.Items {
             Properties = new Dictionary<string, PropertyDefnBase>();
             Auth = pAuth;
             DefineProperties(new List<PropertyDefnBase>() {
-                new PropertyDefn<BItemType>() {
-                    name = "_Type",
+                new PropertyDefn<BItemType>("_Type") {
                     getter = () => { return ItemType; }
                 },
-                new PropertyDefn<string>() {
-                    name = "_Id",
+                new PropertyDefn<string>("_Id") {
                     getter = () => { return Id; }
                 },
-                new PropertyDefn<string>() {
-                    name = "_OwnerId",
+                new PropertyDefn<string>("_OwnerId") {
                     getter = () => { return OwnerId; }
                 },
-                new PropertyDefn<BItemState>() {
-                    name = "_State",
+                new PropertyDefn<BItemState>("_State") {
                     getter = () => { return State; }
                 },
-                new PropertyDefn<string>() {
-                    name = "_Layer",
+                new PropertyDefn<string>("_Layer") {
                     getter = () => { return Layer; }
                 },
             });
@@ -102,6 +102,7 @@ namespace org.herbal3d.BasilX.Items {
             T ret = default(T);
             lock (Properties) {
                 if (Properties.TryGetValue(pPropName, out PropertyDefnBase pbase)) {
+                    // TODO: if type does not match, should we do type conversion?
                     if (pbase.type == typeof(T)) {
                         PropertyDefn<T> defn = pbase as PropertyDefn<T>;
                         if (defn.getter != null) {
@@ -113,10 +114,12 @@ namespace org.herbal3d.BasilX.Items {
             return ret;
         }
 
+        // Fetch multiple property values based on a filter expression
         public List<object> FetchProperties(string pFilter) {
             return new List<object>();
         }
 
+        // Set a property value
         public void SetProperty<T>(string pPropId, T value) {
             lock (Properties) {
                 if (Properties.TryGetValue(pPropId, out PropertyDefnBase pbase)) {
@@ -180,6 +183,7 @@ namespace org.herbal3d.BasilX.Items {
         public void SetShutdown() { this.SetState(BItemState.SHUTDOWN); }
 
         // Return when this BItem is ready.
+        // Caller should 'await' on this function.
         // If the BItem does not come ready in specified period, throws BasilXException.
         // Timeout is in milliseconds.
         public Task WhenReady(int pTimeoutMS) {
@@ -187,15 +191,18 @@ namespace org.herbal3d.BasilX.Items {
                 if (State != BItemState.READY) {
                     DateTime waitStart = DateTime.UtcNow;
                     while (true) {
-                        if (DeleteInProgress
-                                || State == BItemState.FAILED
-                                || State == BItemState.SHUTDOWN
-                                || (DateTime.UtcNow - waitStart).TotalMilliseconds > pTimeoutMS ) {
-                            throw new BasilXException("BItem READY timeout");
-                        }
                         if (State == BItemState.READY) {
                             break;
                         }
+                        if (DeleteInProgress
+                                || State == BItemState.FAILED
+                                || State == BItemState.SHUTDOWN ) {
+                            throw new BasilXException("Waiting for BItem that is deleted for failed");
+                        }
+                        if ((DateTime.UtcNow - waitStart).TotalMilliseconds > pTimeoutMS) {
+                            throw new BasilXException("BItem READY timeout");
+                        }
+                        // Wait for a while and check for READY again
                         await Task.Delay(BasilXContext.Instance.parms.P<int>(Params.PAssetFetchCheckIntervalMS));
                     }
                 }
