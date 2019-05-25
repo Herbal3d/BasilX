@@ -16,8 +16,8 @@ using System.Threading;
 
 using org.herbal3d.BasilX.Util;
 
-namespace org.herbal3d.BasilX {
-    class BasilXViewer {
+namespace org.herbal3d.BasilX.Graphics {
+    public class BasilXViewer {
         private readonly static string _logHeader = "[BasilXViewer]";
 
         private BasilXContext _context;

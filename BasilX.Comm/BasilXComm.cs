@@ -17,8 +17,8 @@ using System.Threading;
 using org.herbal3d.transport;
 using org.herbal3d.BasilX.Util;
 
-namespace org.herbal3d.BasilX {
-    class BasilXComm {
+namespace org.herbal3d.BasilX.Comm {
+    public class BasilXComm {
         private readonly static string _logHeader = "[BasilXComm]";
 
         private BasilXContext _context;

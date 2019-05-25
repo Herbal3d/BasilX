@@ -59,6 +59,8 @@ namespace org.herbal3d.BasilX.Items {
 
     public class BItem {
 
+        private static string _logHeader = "[BItem]";
+
         public string Id;
         public Dictionary<string, PropertyDefnBase> Properties;
         public string Auth;
@@ -115,8 +117,29 @@ namespace org.herbal3d.BasilX.Items {
         }
 
         // Fetch multiple property values based on a filter expression
-        public List<object> FetchProperties(string pFilter) {
-            return new List<object>();
+        public Dictionary<string, object> FetchProperties(string pFilter) {
+            var ret = new Dictionary<string, object>();
+            lock (Properties) {
+                foreach (var kvp in Properties) {
+                    // Do some wildcard matching on filter and property name
+                    var pbase = kvp.Value;
+                    try {
+                        // magic to get the typed definition of SetProperty<T>
+                        // https://stackoverflow.com/questions/2604743/setting-generic-type-at-runtime
+                        // https://stackoverflow.com/questions/4010144/convert-variable-to-type-only-known-at-run-time
+                        Type genericType = typeof(PropertyDefn<>).MakeGenericType(new Type[] { kvp.Value.GetType() });
+                        var defn = Convert.ChangeType(pbase, genericType);
+                        var getter = genericType.GetMethod("getter");
+                        object val = getter.Invoke(defn, new object[] { kvp.Value });
+                        ret.Add(kvp.Key, val);
+                    }
+                    catch (Exception e) {
+                        BasilXContext.Instance.log.ErrorFormat("{0} FetchProperties: exception fetching value for {1}: {2}",
+                                    _logHeader, kvp.Key, e);
+                    }
+                }
+            }
+            return ret;
         }
 
         // Set a property value
@@ -147,8 +170,10 @@ namespace org.herbal3d.BasilX.Items {
                                 var setter = genericType.GetMethod("setter");
                                 setter.Invoke(defn, new object[] { kvp.Value });
                             }
-                            catch {
+                            catch (Exception e) {
                                 // All that didn't work
+                                BasilXContext.Instance.log.ErrorFormat("{0} SetProperties: exception setting value for {1}: {2}",
+                                        _logHeader, kvp.Key, e);
                             }
                         }
                     }

@@ -15,6 +15,8 @@ using System.Text;
 using System.Reflection;
 using System.Threading;
 
+using org.herbal3d.BasilX.Comm;
+using org.herbal3d.BasilX.Graphics;
 using org.herbal3d.BasilX.Util;
 
 using org.herbal3d.cs.CommonEntitiesUtil;

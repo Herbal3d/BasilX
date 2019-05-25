@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herbal3d.HerbalTransportCS"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasilX.Items", "BasilX.Items\BasilX.Items.csproj", "{07AF45C0-B99E-4534-8D7C-45B82906D0B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasilX.Util", "BasilX.Util\BasilX.Util.csproj", "{6F8960A4-D8C2-4473-914D-01ED46796CDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasilX.Util", "BasilX.Util\BasilX.Util.csproj", "{6F8960A4-D8C2-4473-914D-01ED46796CDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasilX.Graphics", "BasilX.Graphics\BasilX.Graphics.csproj", "{3BFE3A6B-8E71-48EA-8BB1-6809994E1373}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasilX.Comm", "BasilX.Comm\BasilX.Comm.csproj", "{DB8A4A99-94D7-4C25-9FC5-A22F28A78A1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{6F8960A4-D8C2-4473-914D-01ED46796CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F8960A4-D8C2-4473-914D-01ED46796CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F8960A4-D8C2-4473-914D-01ED46796CDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BFE3A6B-8E71-48EA-8BB1-6809994E1373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BFE3A6B-8E71-48EA-8BB1-6809994E1373}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BFE3A6B-8E71-48EA-8BB1-6809994E1373}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BFE3A6B-8E71-48EA-8BB1-6809994E1373}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB8A4A99-94D7-4C25-9FC5-A22F28A78A1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB8A4A99-94D7-4C25-9FC5-A22F28A78A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB8A4A99-94D7-4C25-9FC5-A22F28A78A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB8A4A99-94D7-4C25-9FC5-A22F28A78A1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
