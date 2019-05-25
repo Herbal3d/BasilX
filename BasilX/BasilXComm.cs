@@ -14,15 +14,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
+using org.herbal3d.transport;
 using org.herbal3d.BasilX.Util;
 
 namespace org.herbal3d.BasilX {
-    class BasilXViewer {
-        private readonly static string _logHeader = "[BasilXViewer]";
+    class BasilXComm {
+        private readonly static string _logHeader = "[BasilXComm]";
 
         private BasilXContext _context;
 
-        public BasilXViewer(BasilXContext pContext) {
+        public BasilXComm(BasilXContext pContext) {
             _context = pContext;
         }
 

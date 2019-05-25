@@ -16,7 +16,7 @@ using System.Text;
 
 using org.herbal3d.cs.CommonEntitiesUtil;
 
-namespace org.herbal3d.BasilX {
+namespace org.herbal3d.BasilX.Util {
     public class Params : IParameters {
         private static readonly string _logHeader = "[PARAMS]";
 
@@ -45,21 +45,42 @@ namespace org.herbal3d.BasilX {
         //
         // The single letter parameters for the delegates are:
         //    v = value (appropriate type)
+        public const string PIsSecure = "IsSecure";
+        public const string PDisableNaglesAlgorithm = "DisableNaglesAlgorithm";
+        public const string PConnectionURL = "ConnectionURL";
+        public const string PSecureConnectionURL = "SecureConnectionURL";
+        public const string PCertificate = "Certificate";
+        public const string PVerbose = "Verbose";
+        public const string PQuiet = "Quiet";
+
+        public const string PAssetFetchTimeoutMS = "AssetFetchTimeoutMS";
+        public const string PAssetFetchCheckIntervalMS = "AssetFetchCheckIntervalMS";
+        public const string PInstanceAssetWaitTimeoutMS = "InstanceAssetWaitTimeoutMS";
         public ParameterDefnBase[] ParameterDefinitions =
         {
             new ParameterDefn<string>("==========", "General Input and Output Parameters", null),
-            new ParameterDefn<bool>("IsSecure", "Boolean saying whether input connection must be secure",
+            new ParameterDefn<bool>(PIsSecure, "Boolean saying whether input connection must be secure",
                 false),
-            new ParameterDefn<bool>("DisableNaglesAlgorithm", "Whether to disable Nagle's efficiency adding but also latency adding operation",
+            new ParameterDefn<bool>(PDisableNaglesAlgorithm, "Whether to disable Nagle's efficiency adding but also latency adding operation",
                 true),
-            new ParameterDefn<string>("ConnectionURL", "URL to open to accept connections",
+            new ParameterDefn<string>(PConnectionURL, "URL to open to accept connections",
                 "ws://0.0.0.0:11440"),
-            new ParameterDefn<string>("SecureConnectionURL", "URL to open to accept connections",
+            new ParameterDefn<string>(PSecureConnectionURL, "URL to open to accept connections",
                 "wss://0.0.0.0:11440"),
-            new ParameterDefn<string>("Certificate", "Certificate to use for wss connections",
+            new ParameterDefn<string>(PCertificate, "Certificate to use for wss connections",
                 null),
-            new ParameterDefn<bool>("Verbose", "Boolean saying whether input connection must be secure",
+            new ParameterDefn<bool>(PVerbose, "Boolean saying whether input connection must be secure",
                 true, "v"),
+            new ParameterDefn<bool>(PQuiet, "Boolean saying whether to suppress console output",
+                false, "v"),
+
+            new ParameterDefn<string>("==========", "Content Management", null),
+            new ParameterDefn<int>(PAssetFetchTimeoutMS, "Boolean saying whether to suppress console output",
+                5000),
+            new ParameterDefn<int>(PAssetFetchCheckIntervalMS, "Boolean saying whether to suppress console output",
+                200),
+            new ParameterDefn<int>(PInstanceAssetWaitTimeoutMS, "Boolean saying whether to suppress console output",
+                10000),
 
             new ParameterDefn<string>("==========", "OAR Reading Specific Parameters", null),
             new ParameterDefn<string>("ConvoarID", "GUID for 'convoar' identity (used for CreatorID, ...)",

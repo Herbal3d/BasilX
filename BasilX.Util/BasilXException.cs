@@ -12,21 +12,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading;
 
-using org.herbal3d.BasilX.Util;
+namespace org.herbal3d.BasilX.Util {
+    public class BasilXException : Exception {
 
-namespace org.herbal3d.BasilX {
-    class BasilXViewer {
-        private readonly static string _logHeader = "[BasilXViewer]";
-
-        private BasilXContext _context;
-
-        public BasilXViewer(BasilXContext pContext) {
-            _context = pContext;
+        public BasilXException(string msg) {
         }
-
-        public void Start(CancellationTokenSource pCanceller) {
-        }
+        
     }
 }

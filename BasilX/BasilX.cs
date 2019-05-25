@@ -12,34 +12,19 @@
 using System;
 using System.Linq;
 using System.Text;
-using System.Collections.Generic;
-using System.Net;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
+
+using org.herbal3d.BasilX.Util;
 
 using org.herbal3d.cs.CommonEntitiesUtil;
 
 namespace org.herbal3d.BasilX {
-    public class BasilXContext {
-        // Globals for some things that just are global
-        public Params parms;
-        public BLogger log;
-
-        public string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-        // A command is added to the pre-build events that generates BuildDate resource:
-        //        echo %date% %time% > "$(ProjectDir)\Resources\BuildDate.txt"
-        public string buildDate = Properties.Resources.BuildDate.Trim();
-        // A command is added to the pre-build events that generates last commit resource:
-        //        git rev-parse HEAD > "$(ProjectDir)\Resources\GitCommit.txt"
-        public string gitCommit = Properties.Resources.GitCommit.Trim();
-
-    }
-
     public class BasilX {
         private static readonly string _logHeader = "[BasilX]";
 
-        private BasilXContext _context;
+        private static BasilX _instance;
+        protected BasilXContext _context;
 
         private string Invocation() {
             StringBuilder buff = new StringBuilder();
@@ -51,14 +36,21 @@ namespace org.herbal3d.BasilX {
         }
 
         static void Main(string[] args) {
-            BasilX basilTest = new BasilX();
-            basilTest.Start(args);
+            _instance = new BasilX();
+            _instance.Start(args);
             return;
         }
 
         public void Start(string[] args) {
-            _context = new BasilXContext {
-                log = new LoggerConsole()
+            _context = new BasilXContext() {
+                log = new LoggerConsole(),
+                version = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+                // A command is added to the pre-build events that generates BuildDate resource:
+                //        echo %date% %time% > "$(ProjectDir)\Resources\BuildDate.txt"
+                buildDate = Properties.Resources.BuildDate.Trim(),
+                // A command is added to the pre-build events that generates last commit resource:
+                //        git rev-parse HEAD > "$(ProjectDir)\Resources\GitCommit.txt"
+                gitCommit = Properties.Resources.GitCommit.Trim()
             };
             _context.parms = new Params(_context);
 
@@ -80,20 +72,27 @@ namespace org.herbal3d.BasilX {
                 return;
             }
 
-            if (_context.parms.P<bool>("Verbose")) {
-                _context.log.SetVerbose(_context.parms.P<bool>("Verbose"));
+            if (_context.parms.P<bool>(Params.PVerbose)) {
+                _context.log.SetVerbose(_context.parms.P<bool>(Params.PVerbose));
             }
 
-            if (!_context.parms.P<bool>("Quiet")) {
+            if (!_context.parms.P<bool>(Params.PQuiet)) {
                 System.Console.WriteLine("BasilX v" + _context.version
                             + " built " + _context.buildDate
                             + " commit " + _context.gitCommit
                             );
             }
 
-            var viewer  = new BasilXViewer(_context);
+            // Appliction level cancellation
             var canceller = new CancellationTokenSource();
+
+            // Start the graphics system
+            var viewer  = new BasilXViewer(_context);
             viewer.Start(canceller);
+
+            // Start the communication system
+            var comm = new BasilXComm(_context);
+            comm.Start(canceller);
 
             while (!canceller.IsCancellationRequested) {
                 Thread.Sleep(100);
