@@ -2,9 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>org.herbal3d.BasilX.Items</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\HerbalCommonEntitiesCS\OMV.Pieces\OMV.Pieces.csproj" />
+    <ProjectReference Include="..\..\HerbalTransportCS\HerbalTransportCS\Herbal3d.HerbalTransportCS.csproj" />
     <ProjectReference Include="..\BasilX.Util\BasilX.Util.csproj" />
   </ItemGroup>
 

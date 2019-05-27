@@ -44,6 +44,7 @@ namespace org.herbal3d.BasilX.Items {
     public abstract class PropertyDefnBase {
         public string name;
         public Type type;
+        public abstract object val { get; }
     }
     public class PropertyDefn<T> : PropertyDefnBase {
         public BGetValue<T> getter;
@@ -55,6 +56,16 @@ namespace org.herbal3d.BasilX.Items {
             name = pName;
             type = typeof(T);
         }
+        // Get the value whatever type it is
+        public override object val {
+            get {
+                object ret = null;
+                if (getter != null) {
+                    ret = getter();
+                }
+                return ret;
+            }
+        }
     }
 
     public class BItem {
@@ -63,7 +74,7 @@ namespace org.herbal3d.BasilX.Items {
 
         public string Id;
         public Dictionary<string, PropertyDefnBase> Properties;
-        public string Auth;
+        public BAuth Auth;
         public string OwnerId;
         public string Layer = "layer.default";
         public BItemType ItemType = BItemType.UNKNOWN;
@@ -72,9 +83,9 @@ namespace org.herbal3d.BasilX.Items {
         public bool DeleteInProgress = false;
         public DateTime WhenDeleted;    // time this BItem was deleted (used in deleted list)
 
-        public BItem(string pId, string pAuth) {
+        public BItem(string pId, BAuth pAuth) : this(pId, pAuth, BItemType.UNKNOWN) {
         }
-        public BItem(string pId, string pAuth, BItemType pItemType) {
+        public BItem(string pId, BAuth pAuth, BItemType pItemType) {
             Id = pId;
             Properties = new Dictionary<string, PropertyDefnBase>();
             Auth = pAuth;
@@ -104,13 +115,49 @@ namespace org.herbal3d.BasilX.Items {
             T ret = default(T);
             lock (Properties) {
                 if (Properties.TryGetValue(pPropName, out PropertyDefnBase pbase)) {
-                    // TODO: if type does not match, should we do type conversion?
                     if (pbase.type == typeof(T)) {
                         PropertyDefn<T> defn = pbase as PropertyDefn<T>;
-                        if (defn.getter != null) {
+                        if (defn != null && defn.getter != null) {
                             ret = defn.getter();
                         }
                     }
+                    else {
+                        // The caller is asking for a different type than the native type.
+                        // Get the value and try to do a conversion to the requested type.
+                        // Probably wants to do a ToString().
+                        try {
+                            object vall = pbase.val;
+                            if (typeof(T) == typeof(String)) {
+                                // If asking for a string return, see if there is a ToString method
+                                var toStringer = vall.GetType().GetMethod("ToString");
+                                if (toStringer != null) {
+                                    ret = (T)toStringer.Invoke(vall, null);
+                                }
+                                else {
+                                    ret = (T)vall;
+                                }
+                            }
+                            else {
+                                ret = (T)vall;
+                            }
+                        }
+                        catch (Exception e) {
+                            BasilXContext.Instance.log.ErrorFormat("{0} GetProperty: exception fetching value for {1}: {2}",
+                                    _logHeader, pPropName, e);
+                            ret = default(T);
+                        }
+                    }
+                }
+            }
+            return ret;
+        }
+
+        // Get the value of a property as a raw object so one can do their own conversions
+        public object GetProperty(string pPropName) {
+            object ret = null;
+            lock (Properties) {
+                if (Properties.TryGetValue(pPropName, out PropertyDefnBase pbase)) {
+                    ret = pbase.val;
                 }
             }
             return ret;
@@ -123,20 +170,7 @@ namespace org.herbal3d.BasilX.Items {
                 foreach (var kvp in Properties) {
                     // Do some wildcard matching on filter and property name
                     var pbase = kvp.Value;
-                    try {
-                        // magic to get the typed definition of SetProperty<T>
-                        // https://stackoverflow.com/questions/2604743/setting-generic-type-at-runtime
-                        // https://stackoverflow.com/questions/4010144/convert-variable-to-type-only-known-at-run-time
-                        Type genericType = typeof(PropertyDefn<>).MakeGenericType(new Type[] { kvp.Value.GetType() });
-                        var defn = Convert.ChangeType(pbase, genericType);
-                        var getter = genericType.GetMethod("getter");
-                        object val = getter.Invoke(defn, new object[] { kvp.Value });
-                        ret.Add(kvp.Key, val);
-                    }
-                    catch (Exception e) {
-                        BasilXContext.Instance.log.ErrorFormat("{0} FetchProperties: exception fetching value for {1}: {2}",
-                                    _logHeader, kvp.Key, e);
-                    }
+                    ret.Add(pbase.name, pbase.val);
                 }
             }
             return ret;
@@ -238,6 +272,9 @@ namespace org.herbal3d.BasilX.Items {
         // Wait until BItem is ready. Timeout is parameterized default (probably 5 seconds)
         public Task WhenReady() {
             return WhenReady(BasilXContext.Instance.parms.P<int>(Params.PAssetFetchTimeoutMS));
+        }
+
+        public virtual void ReleaseResources() {
         }
 
         // ====================================================================
