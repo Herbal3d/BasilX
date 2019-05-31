@@ -26,7 +26,11 @@ namespace org.herbal3d.BasilX.Graphics {
             _context = pContext;
         }
 
-        public void Start(CancellationTokenSource pCanceller) {
+        public void Start() {
+            _context.log.DebugFormat("{0} Start", _logHeader);
+            using (var game = new CodeOnlyGame()) {
+                game.Run();
+            }
         }
     }
 }

@@ -13,6 +13,7 @@
 
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 using org.herbal3d.cs.CommonEntitiesUtil;
 
@@ -118,6 +119,9 @@ namespace org.herbal3d.BasilX.Util {
             public abstract string GetValue();
             // Set the value to this string value
             public abstract void SetValue(string valAsString);
+
+            // Return the raw, untyped value of the parameter
+            public abstract object GetObjectValue();
         }
 
         // Specific parameter definition for a parameter of a specific type.
@@ -134,6 +138,9 @@ namespace org.herbal3d.BasilX.Util {
             public T Value() {
                 return value;
             }
+            public override object GetObjectValue() {
+                return value;
+            }
             public override void AssignDefault() {
                 value = defaultValue;
             }
@@ -148,7 +155,7 @@ namespace org.herbal3d.BasilX.Util {
                 // Find the 'Parse' method on that type
                 System.Reflection.MethodInfo parser = null;
                 try {
-                    parser = GetValueType().GetMethod("Parse", new Type[] { typeof(String) } );
+                    parser = GetValueType().GetMethod("Parse", new Type[] { typeof(String) });
                 }
                 catch {
                     parser = null;
@@ -160,7 +167,7 @@ namespace org.herbal3d.BasilX.Util {
                         // System.Console.WriteLine("SetValue: setting value on {0} to {1}", this.name, setValue);
                         // Store the parsed value
                         value = setValue;
-                        context.Context.log.DebugFormat("{0} SetValue. {1} = {2}", _logHeader, name, setValue);
+                        // context.Context.log.DebugFormat("{0} SetValue. {1} = {2}", _logHeader, name, setValue);
                     }
                     catch (Exception e) {
                         context.Context.log.ErrorFormat("{0} Failed parsing parameter value '{1}': '{2}'", _logHeader, valAsString, e);
@@ -171,7 +178,7 @@ namespace org.herbal3d.BasilX.Util {
                     try {
                         T setValue = (T)Convert.ChangeType(valAsString, GetValueType());
                         value = setValue;
-                        context.Context.log.DebugFormat("{0} SetValue. Converter. {1} = {2}", _logHeader, name, setValue);
+                        // context.Context.log.DebugFormat("{0} SetValue. Converter. {1} = {2}", _logHeader, name, setValue);
                     }
                     catch (Exception e) {
                         context.Context.log.ErrorFormat("{0} Conversion failed for {1}: {2}", _logHeader, this.name, e);
@@ -283,6 +290,18 @@ namespace org.herbal3d.BasilX.Util {
             return ret;
         }
 
+        public bool HasParam(string pParamName) {
+            return TryGetParameter(pParamName, out ParameterDefnBase pbase);
+        }
+
+        public object GetObjectValue(string pParamName) {
+            object ret = null;
+            if (TryGetParameter(pParamName, out ParameterDefnBase pbase)) {
+                ret = pbase.GetObjectValue();
+            }
+            return ret;
+        }
+
         // Find the named parameter and set its value.
         // Returns 'false' if the parameter could not be found.
         public bool SetParameterValue(string paramName, string valueAsString) {
@@ -328,7 +347,7 @@ namespace org.herbal3d.BasilX.Util {
                 string para = args[ii];
                 // is this a parameter?
                 if (para[0] == '-') {
-                    ii += AddCommandLineParameter(para, (ii==(args.Length-1)) ? null : args[ii + 1]);
+                    ii += AddCommandLineParameter(para, (ii == (args.Length - 1)) ? null : args[ii + 1]);
                 }
                 else {
                     if (ii == 0 && firstOpFlag) {
@@ -434,5 +453,6 @@ namespace org.herbal3d.BasilX.Util {
             }
             return ret;
         }
+
     }
 }

@@ -12,6 +12,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Threading;
 
 using org.herbal3d.cs.CommonEntitiesUtil;
 
@@ -28,6 +29,9 @@ namespace org.herbal3d.BasilX.Util {
         // Globals for some things that just are global
         public Params parms;
         public BLogger log;
+
+        // Application wide cancellation flag
+        public CancellationTokenSource cancellation;
 
         public string version;
         // A command is added to the pre-build events that generates BuildDate resource:

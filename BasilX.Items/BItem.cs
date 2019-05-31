@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using org.herbal3d.BasilX.Util;
+using org.herbal3d.cs.CommonEntitiesUtil;
 
 namespace org.herbal3d.BasilX.Items {
     public enum BItemState {
@@ -126,20 +127,7 @@ namespace org.herbal3d.BasilX.Items {
                         // Get the value and try to do a conversion to the requested type.
                         // Probably wants to do a ToString().
                         try {
-                            object vall = pbase.val;
-                            if (typeof(T) == typeof(String)) {
-                                // If asking for a string return, see if there is a ToString method
-                                var toStringer = vall.GetType().GetMethod("ToString");
-                                if (toStringer != null) {
-                                    ret = (T)toStringer.Invoke(vall, null);
-                                }
-                                else {
-                                    ret = (T)vall;
-                                }
-                            }
-                            else {
-                                ret = (T)vall;
-                            }
+                            ret = ParamBlock.ConvertTo<T>(pbase.val);
                         }
                         catch (Exception e) {
                             BasilXContext.Instance.log.ErrorFormat("{0} GetProperty: exception fetching value for {1}: {2}",

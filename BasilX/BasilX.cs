@@ -54,7 +54,10 @@ namespace org.herbal3d.BasilX {
                 buildDate = Properties.Resources.BuildDate.Trim(),
                 // A command is added to the pre-build events that generates last commit resource:
                 //        git rev-parse HEAD > "$(ProjectDir)\Resources\GitCommit.txt"
-                gitCommit = Properties.Resources.GitCommit.Trim()
+                gitCommit = Properties.Resources.GitCommit.Trim(),
+
+                // Application level shutdown flag
+                cancellation = new CancellationTokenSource()
             };
             _context.parms = new Params(_context);
 
@@ -81,24 +84,22 @@ namespace org.herbal3d.BasilX {
             }
 
             if (!_context.parms.P<bool>(Params.PQuiet)) {
-                System.Console.WriteLine("BasilX v" + _context.version
+                System.Console.WriteLine(_logHeader
+                            + " v" + _context.version
                             + " built " + _context.buildDate
                             + " commit " + _context.gitCommit
                             );
             }
 
-            // Appliction level cancellation
-            var canceller = new CancellationTokenSource();
-
             // Start the graphics system
             var viewer  = new BasilXViewer(_context);
-            viewer.Start(canceller);
+            viewer.Start();
 
             // Start the communication system
             var comm = new BasilXComm(_context);
-            comm.Start(canceller);
+            comm.Start();
 
-            while (!canceller.IsCancellationRequested) {
+            while (!_context.cancellation.IsCancellationRequested) {
                 Thread.Sleep(100);
             }
         }

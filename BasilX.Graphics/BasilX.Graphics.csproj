@@ -10,4 +10,31 @@
     <ProjectReference Include="..\BasilX.Util\BasilX.Util.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Xenko">
+      <HintPath>..\..\xenko\Xenko.dll</HintPath>
+    </Reference>
+    <Reference Include="Xenko.Core">
+      <HintPath>..\..\xenko\Xenko.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xenko.Core.Mathematics">
+      <HintPath>..\..\xenko\Xenko.Core.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="Xenko.Engine">
+      <HintPath>..\..\xenko\Xenko.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="Xenko.Games">
+      <HintPath>..\..\xenko\Xenko.Games.dll</HintPath>
+    </Reference>
+    <Reference Include="Xenko.Graphics">
+      <HintPath>..\..\xenko\Xenko.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="Xenko.Rendering">
+      <HintPath>..\..\xenko\Xenko.Rendering.dll</HintPath>
+    </Reference>
+    <Reference Include="Xenko.Shaders">
+      <HintPath>..\..\xenko\Xenko.Shaders.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
