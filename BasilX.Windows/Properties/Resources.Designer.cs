@@ -19,7 +19,7 @@ namespace org.herbal3d.BasilX.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,7 +61,7 @@ namespace org.herbal3d.BasilX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sat 07/07/2018 22:37:08.88 
+        ///   Looks up a localized string similar to Thu 04/25/2019 10:43:29.27 
         ///.
         /// </summary>
         internal static string BuildDate {
@@ -71,7 +71,7 @@ namespace org.herbal3d.BasilX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 06e69ef2d9e8b442d59058a6516d5b9736f64218
+        ///   Looks up a localized string similar to 35df3aa63c2bd892688b99e5b2d9d01883c87a75
         ///.
         /// </summary>
         internal static string GitCommit {

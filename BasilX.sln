@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasilX", "BasilX\BasilX.csproj", "{D05651FE-3AD0-47C0-B2DC-370FC9F702B2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Herbal3d.CommonEntitiesUtil", "..\HerbalCommonEntitiesCS\CommonEntitiesUtil\Herbal3d.CommonEntitiesUtil.csproj", "{986BC69C-B116-462A-80C7-9FC3236FD38F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OMV.Pieces", "..\HerbalCommonEntitiesCS\OMV.Pieces\OMV.Pieces.csproj", "{CB288531-DE0A-4BE5-A7D4-C79EA59CD64F}"
@@ -15,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasilX.Items", "BasilX.Item
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasilX.Util", "BasilX.Util\BasilX.Util.csproj", "{6F8960A4-D8C2-4473-914D-01ED46796CDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasilX.Graphics", "BasilX.Graphics\BasilX.Graphics.csproj", "{3BFE3A6B-8E71-48EA-8BB1-6809994E1373}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasilX.Graphics", "BasilX.Graphics\BasilX.Graphics.csproj", "{3BFE3A6B-8E71-48EA-8BB1-6809994E1373}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasilX.Comm", "BasilX.Comm\BasilX.Comm.csproj", "{DB8A4A99-94D7-4C25-9FC5-A22F28A78A1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasilX.Comm", "BasilX.Comm\BasilX.Comm.csproj", "{DB8A4A99-94D7-4C25-9FC5-A22F28A78A1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasilX.Windows", "BasilX.Windows\BasilX.Windows.csproj", "{37D3A8AF-9AD4-417A-BCC8-76C258F62B4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +57,10 @@ Global
 		{DB8A4A99-94D7-4C25-9FC5-A22F28A78A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB8A4A99-94D7-4C25-9FC5-A22F28A78A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB8A4A99-94D7-4C25-9FC5-A22F28A78A1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37D3A8AF-9AD4-417A-BCC8-76C258F62B4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37D3A8AF-9AD4-417A-BCC8-76C258F62B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37D3A8AF-9AD4-417A-BCC8-76C258F62B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37D3A8AF-9AD4-417A-BCC8-76C258F62B4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
