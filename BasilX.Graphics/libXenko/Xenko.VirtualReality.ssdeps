@@ -1,0 +1,4 @@
+NativeLib;x64\openvr_api.dll;x64\openvr_api.dll
+NativeLib;x86\openvr_api.dll;x86\openvr_api.dll
+NativeLib;x86\libxenkovr.dll;x86\libxenkovr.dll
+NativeLib;x64\libxenkovr.dll;x64\libxenkovr.dll
