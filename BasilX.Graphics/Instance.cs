@@ -18,6 +18,9 @@ using org.herbal3d.BasilX.Util;
 using OMV = OpenMetaverse;
 
 namespace org.herbal3d.BasilX.Graphics {
+    // An "Instance" is a visual occurance of a Displayable in the space.
+    // An Instance is a displayable that has been associated with a graphics
+    //    context and a location in its space.
     public abstract class Instance : BItem {
         static readonly string _logHeader = "[Instance]";
 
