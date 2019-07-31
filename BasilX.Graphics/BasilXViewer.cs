@@ -9,6 +9,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#define USEGODOT
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +18,10 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using org.herbal3d.BasilX.Util;
+
+#if USEGODOT
+using Godot;
+#endif
 
 namespace org.herbal3d.BasilX.Graphics {
     public class BasilXViewer {
@@ -27,13 +33,20 @@ namespace org.herbal3d.BasilX.Graphics {
             _context = pContext;
         }
 
-        public void Start() {
+        public Task Start() {
             _context.log.DebugFormat("{0} Start", _logHeader);
-            Task.Run(() => {
+
+#if USEGODOT
+            return Task.Run(() => {
+                var sceneTree = new SceneTree();
+            });
+#else
+            return Task.Run(() => {
                 using (var game = new CodeOnlyGame()) {
                     game.Run();
                 }
             });
+#endif
         }
     }
 }

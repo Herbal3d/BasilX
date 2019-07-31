@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 
 using org.herbal3d.BasilX.Comm;
 using org.herbal3d.BasilX.Graphics;
@@ -92,15 +93,20 @@ namespace org.herbal3d.BasilX {
             }
 
             // Start the graphics system
-            var viewer  = new BasilXViewer(_context);
-            viewer.Start();
+            BasilXViewer viewer  = new BasilXViewer(_context);
+            Task viewerTask = viewer.Start();
 
             // Start the communication system
-            var comm = new BasilXComm(_context);
-            comm.Start();
+            BasilXComm comm = new BasilXComm(_context);
+            Task commTask = comm.Start();
 
-            while (!_context.cancellation.IsCancellationRequested) {
-                Thread.Sleep(100);
+            // Wait for everything to complete
+            try {
+                Task.WaitAll(viewerTask, commTask);
+            }
+            catch (Exception e) {
+                // TODO: Should check if it's a cancallation or something bad
+                var ee = e;
             }
         }
     }

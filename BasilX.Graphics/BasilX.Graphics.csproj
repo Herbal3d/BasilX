@@ -11,6 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="GodotSharp">
+      <HintPath>libGodot\GodotSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Xenko">
       <HintPath>..\..\xenko\Xenko.dll</HintPath>
     </Reference>

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 using org.herbal3d.transport;
 using org.herbal3d.BasilX.Util;
@@ -27,8 +28,10 @@ namespace org.herbal3d.BasilX.Comm {
             _context = pContext;
         }
 
-        public void Start() {
+        public Task Start() {
             _context.log.DebugFormat("{0} Start", _logHeader);
+            return Task.Run(() => {
+            });
         }
 
 
