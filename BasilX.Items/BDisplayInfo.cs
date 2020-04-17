@@ -26,11 +26,12 @@ namespace org.herbal3d.BasilX.Items {
         public OMV.Vector3 AabbLowerBackRight;
         public string DisplayableType;  // string version of Displayable.DisplayableType
         public Dictionary<string, string> AssetAttributes = new Dictionary<string, string>();
+
         public BDisplayInfo() {
             DisplayableType = "UNKNOWN";
         }
 
-        // Return a converted version of this info
+        // Return a converted version of this info suitable for the Basil protocol.
         public BasilType.DisplayableInfo ToMessage() {
             BasilType.DisplayableInfo ret = new BasilType.DisplayableInfo();
             if (AabbUpperFrontLeft != null && AabbLowerBackRight != null) {
